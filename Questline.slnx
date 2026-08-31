@@ -3,6 +3,7 @@
     <File Path=".gitignore" />
     <File Path="LICENSE.txt" />
     <File Path="README.md" />
+    <File Path="src/Api/development.db" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/Api/Api.csproj" />

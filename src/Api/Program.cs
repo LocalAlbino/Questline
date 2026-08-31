@@ -1,3 +1,5 @@
+using Questline.Api.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthentication()
@@ -6,6 +8,9 @@ builder.Services.AddAuthentication()
         options.Authority = builder.Configuration["Jwt:Authority"];
         options.Audience = builder.Configuration["Jwt:Audience"];
     });
+
+if (builder.Environment.IsDevelopment())
+    builder.Services.AddSqlite<AppDbContext>(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 builder.Services.AddAuthorizationBuilder();
 
