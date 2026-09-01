@@ -8,7 +8,7 @@ using Questline.Api.Data;
 
 #nullable disable
 
-namespace Questline.Api.Data.Migrations.DevSqlite
+namespace Questline.Api.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20260831205332_InitialCreate")]

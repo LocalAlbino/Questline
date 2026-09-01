@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Questline.Api.Data.Migrations.DevSqlite
+namespace Questline.Api.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
