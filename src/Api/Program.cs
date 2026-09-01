@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Questline.Api.Data;
+using Questline.Api.Endpoints;
 using Questline.Api.Models;
-using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,8 +15,15 @@ if (builder.Environment.IsDevelopment())
 
 builder.Services.AddAuthorizationBuilder();
 
+builder.Services.AddValidation();
+
 var app = builder.Build();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapGroup("api/identity").MapIdentityApi<AppUser>();
+
+app.MapBoardsEndpoints();
 
 app.Run();
