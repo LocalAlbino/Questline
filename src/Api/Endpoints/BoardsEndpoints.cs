@@ -32,11 +32,12 @@ public static class BoardsEndpoints
             var userId = user.GetUserId();
             if (string.IsNullOrEmpty(userId)) return Results.Unauthorized();
 
-            var board = await context.Boards
+            var boardDto = await context.Boards
                 .AsNoTracking()
-                .FirstOrDefaultAsync(board => board.Id == id && board.UserId == userId);
-
-            return board is null ? Results.NotFound() : Results.Ok(new BoardDto(board.Id, board.Title));
+                .Where(board => board.Id == id && board.UserId == userId)
+                .Select(board => new BoardDto(board.Id, board.Title))
+                .FirstOrDefaultAsync();
+            return  boardDto is null ? Results.NotFound() : Results.Ok(boardDto);
         }).WithName("GetBoard");
 
         // POST api/boards/

@@ -23,16 +23,19 @@ public static class BoardsGroupsEndpoints
             var userId = user.GetUserId();
             if (string.IsNullOrEmpty(userId)) return Results.Unauthorized();
             
-            var board = await context.Boards
-                .FirstOrDefaultAsync(board => board.Id == id && board.UserId == userId);
-            if (board is null) return Results.NotFound();
+            // Projecting the groups out of the board keeps ownership and the listing in
+            // one round trip. A null result means no such board; an empty list means a
+            // board that has no groups yet.
+            var groups = await context.Boards
+                .Where(board => board.Id == id && board.UserId == userId)
+                .Select(board => board.Groups
+                    .OrderBy(g => g.Rank)
+                    .ThenBy(g => g.Id)
+                    .Select(g => new GroupDto(g.Id, g.Title, g.Rank))
+                    .ToList())
+                .FirstOrDefaultAsync();
 
-            return Results.Ok(await context.Groups
-                .Where(g => g.BoardId == board.Id)
-                .OrderBy(g => g.Rank)
-                .ThenBy(g => g.Id)
-                .Select(g => new GroupDto(g.Id, g.Title, g.Rank))
-                .ToListAsync());
+            return groups is null ? Results.NotFound() : Results.Ok(groups);
         });
         
         // POST api/boards/1/groups

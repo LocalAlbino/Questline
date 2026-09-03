@@ -25,5 +25,7 @@ app.UseAuthorization();
 app.MapGroup("api/identity").MapIdentityApi<AppUser>();
 
 app.MapBoardsEndpoints();
+app.MapBoardsGroupsEndpoints();
+app.MapGroupsEndpoints();
 
 app.Run();
